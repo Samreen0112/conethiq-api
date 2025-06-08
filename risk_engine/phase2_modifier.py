@@ -6,8 +6,9 @@ def modifier_engine(inputs: Dict) -> Dict:
     sla = min(max(inputs.get("SLA") or 80, 0), 100)
     sla_volatility = inputs.get("SLA_volatility") or 3.0
     rto = max(inputs.get("RTO") or 12, 0.1)
-    fallback = str(inputs.get("fallback", "medium")).lower()
-    dependency_risk = max(min(inputs.get("dependency_risk") or 0.0), 1.0), 0.0
+    fallback = str(inputs.get("fallback") or "medium").lower()
+    dependency_risk = max(min(inputs.get("dependency_risk") or 0.0, 1.0), 0.0)
+
 
     # SLA factor adjustment
     sla_factor = (100 - sla) / 100
