@@ -1,0 +1,10 @@
+{
+  "SLA": 85,
+  "SLA_volatility": 6.0,
+  "RTO": 10,
+  "fallback": "high",
+  "dependency_risk": 0.3,
+  "direct_loss": 60000,
+  "seed": 42,
+  "num_incidents_last_year": 2
+}

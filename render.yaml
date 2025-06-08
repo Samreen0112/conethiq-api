@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: conethiq-api
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn api.main:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10
+
