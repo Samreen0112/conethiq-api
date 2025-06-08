@@ -2,7 +2,7 @@ from typing import Dict
 
 def adjust_lef_with_learning(tef: float, fallback: str, num_incidents_last_year: int) -> Dict:
     rationale = []
-    incidents = max(0, num_incidents_last_year)
+    incidents = max(0, num_incidents_last_year or 0)
     fallback = fallback.lower()
 
     # Dampen incident impact based on fallback maturity

@@ -8,7 +8,7 @@ from risk_engine.governance_layer import generate_audit_metadata
 from risk_engine.confidence_index import calculate_confidence
 
 app = Flask(__name__)
-CORS(app)  # 🔓 Allow frontend to call this API
+CORS(app)
 
 @app.route("/simulate", methods=["POST"])
 def simulate():
@@ -16,6 +16,15 @@ def simulate():
         inputs = request.get_json(force=True)
     except Exception as e:
         return jsonify({"error": "Invalid JSON input", "details": str(e)}), 400
+
+    inputs["SLA"] = inputs.get("SLA") or 80
+    inputs["SLA_volatility"] = inputs.get("SLA_volatility") or 3.0
+    inputs["RTO"] = inputs.get("RTO") or 12
+    inputs["fallback"] = inputs.get("fallback") or "medium"
+    inputs["dependency_risk"] = inputs.get("dependency_risk") or 0.0
+    inputs["direct_loss"] = inputs.get("direct_loss") or 50000
+    inputs["num_incidents_last_year"] = inputs.get("num_incidents_last_year") or 0
+    inputs["seed"] = inputs.get("seed") or 42
 
     modifiers = modifier_engine(inputs)
     inputs.update(modifiers)
@@ -31,7 +40,7 @@ def simulate():
     learning = adjust_lef_with_learning(
         tef=inputs["LEF"],
         fallback=inputs["fallback"],
-        num_incidents_last_year=inputs.get("num_incidents_last_year", 0)
+        num_incidents_last_year=inputs["num_incidents_last_year"]
     )
     inputs.update(learning)
     inputs["LEF"] = inputs["Adjusted LEF"]
